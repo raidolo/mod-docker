@@ -10,7 +10,7 @@ Additionally, I also built all the current MOD Plugins available in the [mod-plu
 
 Another nice additional touch, I've also added the [browsepy File manager](https://github.com/moddevices/browsepy) so you can upload files directly from the MOD UI we interface. 
 
-This repo contains all the code to build the docker containers yourself, but because it can take a lot of time I also made a docker prebuilt image available here: ADD LINK TO THE IMAGE
+This repo contains all the code to build the docker containers yourself, but because it can take a lot of time I also made a docker prebuilt image available here: [raidolo/mod-ui](https://hub.docker.com/r/raidolo/mod-ui) on Docker Hub
 
 # mod-docker
 
@@ -35,15 +35,17 @@ $HOME/mod-pedalboards
 
 # USAGE to BUILD everything
 
+*WARNING* It could a long time to compile 
+
 - Clone the repo `git clone git@github.com:raidolo/mod-docker.git`
-- `chmod +x run.sh`
-- `./run.sh`
+- `chmod +x run_build.sh`
+- `./run_build.sh`
 - go to `http://localhost:8888` and start playing!
 
 # USAGE to DOWNLOAD the prebuilt Docker Image
 
 - chmod +x run_docker.sh
-- ./run.sh 
+- ./run_docker.sh 
 - go to `http://localhost:8888` and start playing!
 
 # TODO / GOTCHAS

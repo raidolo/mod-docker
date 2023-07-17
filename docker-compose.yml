@@ -45,3 +45,26 @@ services:
     ports:
       - 8081:8081
       - 8888:8888
+
+  mod-ui-docker:
+    image: raidolo/mod-ui:latest
+    container_name: mod-ui
+    environment:
+      - USER_NAME=${USER_NAME}
+      - GROUP_NAME=${GROUP_NAME}
+      - USER_ID=${USER_ID}
+      - GROUP_ID=${GROUP_ID}
+    volumes:
+      - /dev/shm:/dev/shm:rw
+      - /home/${USER_NAME}/mod-user-files:/home/raid/user-files
+      - /home/${USER_NAME}/mod-data:/home/raid/data
+      - /home/${USER_NAME}/mod-pedalboards:/home/raid/.pedalboards
+    build:
+      context: ./mod-ui
+    ulimits:
+      memlock: 819200000
+      rtprio: 99
+    ports:
+      - 8081:8081
+      - 8888:8888
+
