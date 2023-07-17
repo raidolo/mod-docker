@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM debian:bookworm
 ENV REBUILD=true
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -7,22 +7,27 @@ RUN apt-get update && apt-get install -q -y wget
 
 # Add KX Studio Repo, install plugins
 RUN dpkg --purge kxstudio-repos-gcc5
-RUN wget https://launchpad.net/~kxstudio-debian/+archive/kxstudio/+files/kxstudio-repos_10.0.3_all.deb
-RUN dpkg -i kxstudio-repos_10.0.3_all.deb
+ RUN wget https://launchpad.net/~kxstudio-debian/+archive/kxstudio/+files/kxstudio-repos_10.0.3_all.deb
+ RUN dpkg -i kxstudio-repos_10.0.3_all.deb
 RUN apt-get update && apt-get install -y --no-install-recommends \
-	jackd2 git liblilv-dev libreadline-dev lilv-utils libjack-jackd2-dev python python3.6 python3.6
+        libreadline-dev liblilv-dev lilv-utils libfftw3-dev libjack-jackd2-dev git python3 python3.11
 
 # Build mod-host
 RUN git clone https://github.com/moddevices/mod-host.git /mod/mod-host/source
 RUN apt install build-essential -y --no-install-recommends
+# fix for Debian 12 lilv
+RUN mkdir /usr/include/lilv
+RUN cp /usr/include/lilv-0/lilv/lilv.h /usr/include/lilv/
+#
 RUN make -C /mod/mod-host/source && make install -C  /mod/mod-host/source
 
 # Install LV2 Plugins from MOD Repo (to extract modgui data)
 RUN apt-get update && apt-get install -y --no-install-recommends kxstudio-meta-audio-plugins kxstudio-meta-audio-plugins-lv2 
-RUN git clone https://github.com/moddevices/mod-lv2-data.git /mod/mod-host/mod-lv2-data
-RUN echo
-COPY ./copy_modguis.sh /mod/mod-host
-RUN chmod +x /mod/mod-host/copy_modguis.sh && bash -c  '/mod/mod-host/copy_modguis.sh' && echo
+#RUN git clone https://github.com/moddevices/mod-lv2-data.git /mod/mod-host/mod-lv2-data
+#RUN echo
+#COPY ./copy_modguis.sh /mod/mod-host
+#RUN chmod +x /mod/mod-host/copy_modguis.sh && bash -c  '/mod/mod-host/copy_modguis.sh' && echo
+#ADD plugins.tgz /usr/lib/lv2/
 
 # install gosu for a better su+exec command
 ARG GOSU_VERSION=1.12

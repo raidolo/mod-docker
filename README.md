@@ -1,30 +1,55 @@
+# MOD Software 2023 version
+
+I've forked this code from the very good work made by Alexis Boni in his [mod-docker](https://github.com/ajboni/mod-docker) implementation
+His code was running an old version of the mod-ui interface. 
+I made all the changes to build the current MOD software, taken from the [MOD GitHub](https://github.com/moddevices)
+I did this basically because Mike Oliphant has released a [Neural Amp Modeler LV2 plugin](https://github.com/mikeoliphant/neural-amp-modeler-lv2) and I wanted to have a nice a powerful LV2 host to play with Linux. 
+MOD Devices also made a mod-live-usb ISO to boot an x86 PC with their software, but it's difficult to use and booting from USB would not be ideal.
+
+Additionally, I also built all the current MOD Plugins available in the [mod-plugin-builder repo](https://github.com/moddevices/mod-plugin-builder) so not only you have the free LV2 plugins that Alexis included in his version of mod-docker, but at the end the host will offer nearly 1000 LV2 plugins :)  
+
+Another nice additional touch, I've also added the [browsepy File manager](https://github.com/moddevices/browsepy) so you can upload files directly from the MOD UI we interface. 
+
+This repo contains all the code to build the docker containers yourself, but because it can take a lot of time I also made a docker prebuilt image available here: ADD LINK TO THE IMAGE
+
 # mod-docker
 
-MOD-DOCKER is an open-source [MOD DUO](https://www.moddevices.com/) emulator for Linux based on Docker that lets you play around with hundreds of LV2 audio plugins!
+MOD-DOCKER is an open-source [MOD Software](https://www.moddevices.com/) emulator for Linux based on Docker that lets you play around with hundreds of LV2 audio plugins!
 This project aims to provide a docker container in order to use mod-host and mod-ui painlessly from your linux machine.
 
-MOD DUO team has done a remarkable job for the whole Linux audio open-source community, so if you like this emulator you should go get the real thing!
+MOD team has done a remarkable job for the whole Linux audio open-source community, so if you like this emulator you should go get the real thing!
 
 This project is heavily inspired in [MODEP](https://github.com/BlokasLabs/modep)
 
 # REQUIREMENTS
 
-You need to be have docker installed, running JACK and be part of audio group.
+You need to be have docker installed, docker-compose running JACK and be part of audio group.
 
-# USAGE
+The run scripts available in thie repo make three directories in yout $HOME folder, then the docker compose bind these local dire in the container, this is needed for the browsepy file manager and to store your files permanently in your home folder.
 
-- Clone the repo `git clone git@github.com:ajboni/mod-docker.git`
+The directory that will be made are:
+$HOME/mod-user-files
+$HOME/mod-data
+$HOME/mod-pedalboards
+
+
+# USAGE to BUILD everything
+
+- Clone the repo `git clone git@github.com:raidolo/mod-docker.git`
 - `chmod +x run.sh`
 - `./run.sh`
 - go to `http://localhost:8888` and start playing!
 
+# USAGE to DOWNLOAD the prebuilt Docker Image
+
+- chmod +x run_docker.sh
+- ./run.sh 
+- go to `http://localhost:8888` and start playing!
+
 # TODO / GOTCHAS
 
-I am currently using kxrepos plugins as it was quick and easy way to got them, but it will be more beneficial to build the lv2 plugins directly from mod and [mod-lv2-data](<[https://link](https://github.com/moddevices/mod-lv2-data)>)
+Currently the builder uses the kxrepos plugins and the mod-plugin-builder plugins
 
 Also some plugins does not provide modguis so thy will be 'ugly'. Also some might not even work.
 
-On another topic, I couldn't make mod-ui talk to mod-host other than localhost, thats why the container is just one. It might be nice to have them separated in the future.
-
-![Mod-Docker](/img/img.png)
-![Mod-Docker](/img/img2.png)
+At the moment the container is just one, because it contains everything needed to run, I didn't have time to understant why in the original version of Alexis Bonis he was not able to run mod-host in a separate container, if it will be needed I'll investigate it.
