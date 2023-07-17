@@ -53,3 +53,7 @@ Currently the builder uses the kxrepos plugins and the mod-plugin-builder plugin
 Also some plugins does not provide modguis so thy will be 'ugly'. Also some might not even work.
 
 At the moment the container is just one, because it contains everything needed to run, I didn't have time to understant why in the original version of Alexis Bonis he was not able to run mod-host in a separate container, if it will be needed I'll investigate it.
+
+
+![image](https://github.com/raidolo/mod-docker/assets/25846804/3abe0c9c-38ab-4edd-8463-d61a40f29fbd)
+
