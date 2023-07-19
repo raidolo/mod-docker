@@ -3,6 +3,9 @@ export USER_NAME=$(id -un)
 export USER_ID=$(id -u)
 export GROUP_ID=$(id -g)
 export GROUP_NAME=$(id -gn)
+export PUID=$(id -u)
+export PGID=$(id -g)
+
 
 mkdir -p /home/$USER_NAME/mod-user-files
 mkdir -p /home/$USER_NAME/mod-data

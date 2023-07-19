@@ -7,11 +7,13 @@ services:
     tty: true # docker run
     environment:
       - USER_NAME=${USER_NAME}
-      - GROUP_NAME=${GROUP_NAME}
-      - USER_ID=${USER_ID}
-      - GROUP_ID=${GROUP_ID}
+      - PUID=${PUID}
+      - PGID=${PGID}
     volumes:
       - /dev/shm:/dev/shm:rw
+      - /home/${USER_NAME}/mod-user-files:/mod/user-files
+      - /home/${USER_NAME}/mod-data:/mod/data
+      - /home/${USER_NAME}/mod-pedalboards:/mod/.pedalboards
     build:
       context: ./mod-host
     ulimits:
@@ -29,14 +31,13 @@ services:
     container_name: mod-ui
     environment:
       - USER_NAME=${USER_NAME}
-      - GROUP_NAME=${GROUP_NAME}
-      - USER_ID=${USER_ID}
-      - GROUP_ID=${GROUP_ID}
+      - PUID=${PUID}
+      - PGID=${PGID}
     volumes:
       - /dev/shm:/dev/shm:rw
-      - /home/${USER_NAME}/mod-user-files:/home/raid/user-files
-      - /home/${USER_NAME}/mod-data:/home/raid/data
-      - /home/${USER_NAME}/mod-pedalboards:/home/raid/.pedalboards
+      - /home/${USER_NAME}/mod-user-files:/mod/user-files
+      - /home/${USER_NAME}/mod-data:/mod/data
+      - /home/${USER_NAME}/mod-pedalboards:/mod/.pedalboards
     build:
       context: ./mod-ui
     ulimits:
@@ -51,14 +52,13 @@ services:
     container_name: mod-ui
     environment:
       - USER_NAME=${USER_NAME}
-      - GROUP_NAME=${GROUP_NAME}
-      - USER_ID=${USER_ID}
-      - GROUP_ID=${GROUP_ID}
+      - PUID=${PUID}
+      - PGID=${PGID}
     volumes:
       - /dev/shm:/dev/shm:rw
-      - /home/${USER_NAME}/mod-user-files:/home/raid/user-files
-      - /home/${USER_NAME}/mod-data:/home/raid/data
-      - /home/${USER_NAME}/mod-pedalboards:/home/raid/.pedalboards
+      - /home/${USER_NAME}/mod-user-files:/mod/user-files
+      - /home/${USER_NAME}/mod-data:/mod/data
+      - /home/${USER_NAME}/mod-pedalboards:/mod/.pedalboards
     build:
       context: ./mod-ui
     ulimits:
@@ -67,4 +67,3 @@ services:
     ports:
       - 8081:8081
       - 8888:8888
-
