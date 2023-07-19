@@ -43,7 +43,7 @@ ENV MOD_LOG 0
 
 # Generate user same as host . (It will need to connect to host jack with same username)
 
-CMD echo PUID ${PUID} && echo ${PGID} \
+CMD echo PUID ${PUID} && echo PGID ${PGID} \
         && groupadd -f -g 1000 abc \
         && useradd -m -g 1000 -G audio -u 1000 abc -d /mod  || true  \
         && usermod -u $PUID abc \
