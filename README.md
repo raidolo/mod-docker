@@ -10,6 +10,15 @@ Additionally, I also built all the current MOD Plugins available in the [mod-plu
 
 Another nice additional touch, I've also added the [browsepy File manager](https://github.com/moddevices/browsepy) so you can upload files directly from the MOD UI we interface. 
 
+# LATEST Changes
+MIDI Program Change Commands are working now while the UI is open in the web browser. I had to fork the original MOD Devices mod-ui and now the Dockerfile points to my version https://github.com/raidolo/mod-ui 
+The Pedalboards can be changed using MIDI Channel 1, the Snapshots can be changed using MIDI Channel 2.
+The values for the Program Change start at 0 (zero), so using for instance Channel 1 PC 0 it loads the first pedalboard in your library and so on... the pedalboards are ordered in a not so clear way in mod-ui, so it's better if you call them like "001 - First song", "002 - Second song" and so on, this way you can keep them in the desired order.
+
+Little Bug:
+Currently there is a bug in mod-ui, when you change the pedalboard via MIDI, the page refreshes, but the title on the top left keep the previous pedalboard name. If you refresh the mod-ui page then it updates correctly. I tried to fix it but i had no luck, sorry.
+
+
 # Prebuilt Image on Docker Hub
 
 This repo contains all the code to build the docker containers yourself, but because it can take a lot of time I also made a docker prebuilt image available here: [raidolo/mod-ui](https://hub.docker.com/r/raidolo/mod-ui) on Docker Hub

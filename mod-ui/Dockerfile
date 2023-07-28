@@ -6,7 +6,7 @@ SHELL ["/bin/bash", "-c"]
 
 # Install dependencies
 RUN apt-get update \
-	&& apt-get -y install --no-install-recommends virtualenv python3-pip python3-dev python3-venv libpython3.11-dev python3-setuptools git build-essential libasound2-dev libjack-jackd2-dev liblilv-dev libjpeg-dev zlib1g-dev wget curl \	
+	&& apt-get -y install --no-install-recommends virtualenv python3-pip python3-dev python3-venv libpython3.11-dev python3-setuptools git build-essential libasound2-dev libjack-jackd2-dev liblilv-dev libjpeg-dev zlib1g-dev wget curl cmake \	
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/man/?? /usr/share/man/??_*
 
@@ -15,16 +15,17 @@ RUN apt-get update \
 # Change this according to your distro
 ENV PYTHON_VERSION 3.11  
 RUN echo 2
-RUN git clone https://github.com/moddevices/mod-ui.git /mod/mod-ui
+RUN git clone https://github.com/moddevices/mod-midi-merger.git /mod/mod-midi-merger && cd /mod/mod-midi-merger && mkdir build && cd build && cmake .. && make && cp mod-midi-merger-standalone /usr/local/bin && chmod +x /usr/local/bin/mod-midi-merger-standalone && cd /
+RUN git clone https://github.com/raidolo/mod-ui.git /mod/mod-ui
 RUN virtualenv /mod/mod-ui/modui-env
 ENV VIRTUAL_ENV /mod/mod-ui/modui-env 
 ENV PATH /mod/mod-ui/modui-env/bin:$PATH   
-RUN sed -i -e 's/git+https:\/\/github.com\/dlitz\/pycrypto.git@master#egg=pycrypto/PyCryptodomex/' /mod/mod-ui/requirements.txt
 RUN pip3 install -r /mod/mod-ui/requirements.txt 
-RUN sed -i -e 's/collections.MutableMapping/collections.abc.MutableMapping/' /mod/mod-ui/modui-env/lib/python$PYTHON_VERSION/site-packages/tornado/httputil.py && sed -i -e 's/Image.ANTIALIAS/Image.Resampling.LANCZOS/' /mod/mod-ui/modtools/pedalboard.py && sed -i -e 's/var\ DEBUG\ \=\ true/var\ DEBUG\ \=\ false/' /mod/mod-ui/html/index.html
+RUN sed -i -e 's/collections.MutableMapping/collections.abc.MutableMapping/' /mod/mod-ui/modui-env/lib/python$PYTHON_VERSION/site-packages/tornado/httputil.py 
 RUN pip3 install git+https://github.com/moddevices/browsepy.git backports.shutil-get-terminal-size scandir
 COPY ./start_browsepy.sh /mod/mod-ui/modui-env/bin/
-RUN chmod +x /mod/mod-ui/modui-env/bin/start_browsepy.sh && make -C /mod/mod-ui/utils && chown :audio -R /mod/mod-ui && chmod -R 775 /mod/mod-ui
+COPY ./start_midi_merger.sh /mod/mod-ui/modui-env/bin/
+RUN chmod +x /mod/mod-ui/modui-env/bin/start_browsepy.sh && chmod +x /mod/mod-ui/modui-env/bin/start_midi_merger.sh && make -C /mod/mod-ui/utils && chown :audio -R /mod/mod-ui && chmod -R 775 /mod/mod-ui
 RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -P /mod/mod-ui && chmod +x /mod/mod-ui/wait-for-it.sh
 
 
@@ -48,6 +49,7 @@ CMD echo PUID ${PUID} && echo PGID ${PGID} \
         && useradd -m -g 1000 -G audio -u 1000 abc -d /mod  || true  \
         && usermod -u $PUID abc \
         && groupmod -g $PGID abc \
+        && gosu ${PUID} start_midi_merger.sh \
         && gosu ${PUID} mod-host -p 5555 -f 5556 \
 	&& gosu ${PUID} start_browsepy.sh $MOD_USER_FILES_DIR \
 	&& gosu ${PUID} python3 /mod/mod-ui/server.py 	
