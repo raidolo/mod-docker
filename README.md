@@ -25,7 +25,7 @@ This project is heavily inspired in [MODEP](https://github.com/BlokasLabs/modep)
 
 # REQUIREMENTS
 
-You need to be have docker installed, docker-compose running JACK and be part of audio group.
+You need to be have docker installed, docker-compose, JACK audio server should run at the HOST level, it should be installed in your linux Distro and already running before starting the container, aldo your user should be part of "audio" group.
 
 The run scripts available in thie repo make three directories in yout $HOME folder, then the docker compose bind these local dire in the container, this is needed for the browsepy file manager and to store your files permanently in your home folder.
 
@@ -39,13 +39,14 @@ $HOME/mod-pedalboards
 
 *WARNING* It could a long time to compile 
 
-- Clone the repo `git clone git@github.com:raidolo/mod-docker.git`
+- Clone the repo `git clone https://github.com/raidolo/mod-docker.git`
 - `chmod +x run_build.sh`
 - `./run_build.sh`
 - go to `http://localhost:8888` and start playing!
 
 # USAGE to DOWNLOAD the prebuilt Docker Image
 
+- Clone the repo `git clone https://github.com/raidolo/mod-docker.git`
 - chmod +x run_docker.sh
 - ./run_docker.sh 
 - go to `http://localhost:8888` and start playing!
